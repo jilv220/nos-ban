@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tailwind Extension */
+@layer utilities {
+    .flex-center {
+        @apply flex flex-col justify-center items-center
+    }
+    .btn {
+        @apply no-animation
+    }
+}
