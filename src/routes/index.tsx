@@ -13,6 +13,10 @@ export default function Home() {
   }
 
   return (
+    <>
+    <div class="p-8">
+      <h1 class="text-primary font-h1">Nosban!</h1> 
+    </div>
     <main class="flex-center text-center mx-auto p-4">
       <div class="card bg-neutral/40 shadow-xl p-8 w-4/12">
         <div class="flex flex-col gap-4">
@@ -34,5 +38,6 @@ export default function Home() {
         </div>
       </div>
     </main>
+    </>
   );
 }

@@ -4,10 +4,19 @@
 
 /* Tailwind Extension */
 @layer utilities {
+    .btn {
+        @apply no-animation
+    }
     .flex-center {
         @apply flex flex-col justify-center items-center
     }
-    .btn {
-        @apply no-animation
+    .flex-center-y {
+        @apply flex items-center
+    }
+    .flex-center-x {
+        @apply flex justify-center
+    }
+    .font-h1 {
+        @apply font-bold text-3xl
     }
 }

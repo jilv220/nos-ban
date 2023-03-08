@@ -31,9 +31,6 @@ export default function Root() {
       <Body>
         <Suspense>
           <ErrorBoundary>
-            <nav class="p-8">
-              <label class="text-primary font-bold text-3xl">nosban!</label> 
-            </nav>
             <Routes>
               <FileRoutes />
             </Routes>
