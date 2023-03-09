@@ -1,4 +1,4 @@
-import { createSignal, createRoot } from "solid-js";
+import { createSignal, createRoot } from 'solid-js'
 
 const RELAYS = [
   'wss://nostr.island.network',
@@ -14,4 +14,4 @@ function relayStore() {
   return { relayPool, setRelayPool }
 }
 
-export default createRoot(relayStore);
+export default createRoot(relayStore)

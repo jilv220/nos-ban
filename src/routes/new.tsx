@@ -1,4 +1,4 @@
-import { Outlet, Style } from "solid-start";
+import { Outlet, Style } from 'solid-start'
 
 export default function NewLayout() {
   return (
