@@ -4,9 +4,16 @@
 
 /* Tailwind Extension */
 @layer utilities {
+
+    /* Daisy overwrite */
     .btn {
         @apply no-animation
     }
+    .input {
+        @apply focus:outline-primary
+    }
+
+    /* Extra utils */
     .flex-center {
         @apply flex flex-col justify-center items-center
     }

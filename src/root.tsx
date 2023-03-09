@@ -1,8 +1,6 @@
 // @refresh reload
 import { Suspense } from "solid-js";
 import {
-  useLocation,
-  A,
   Body,
   ErrorBoundary,
   FileRoutes,
@@ -16,11 +14,6 @@ import {
 import "./root.css";
 
 export default function Root() {
-  const location = useLocation();
-  const active = (path: string) =>
-    path == location.pathname
-      ? "border-primary"
-      : "border-transparent hover:border-primary";
   return (
     <Html data-theme="mydark" lang="en">
       <Head>

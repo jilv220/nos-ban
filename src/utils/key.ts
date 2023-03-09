@@ -11,3 +11,9 @@ export const toNip19 = (priv: string, pub: string) => {
     let npub = nip19.npubEncode(pub)
     return {nsec, npub}
 }
+
+export const fromNip19 = (nsec: string, npub: string) => {
+    let priv = nip19.decode(nsec)
+    let pub = nip19.decode(npub)
+    return {priv, pub}
+}

@@ -25,7 +25,7 @@ export default function Home() {
             <label class="label">
               <span class="label-text">Your Private Key</span>
             </label>
-            <input type="text" placeholder="nsec/hex" class="input input-bordered focus:outline-primary" />
+            <input type="text" placeholder="nsec/hex" class="input input-bordered" />
           </div>
           <div class="mt-2 flex">
             <button class="btn btn-primary mr-2">Login</button>
