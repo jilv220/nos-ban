@@ -23,6 +23,7 @@ specifiers:
   solid-start: ^0.2.23
   solid-start-node: ^0.2.19
   solid-start-vercel: ^0.2.23
+  solid-toast: ^0.4.0
   tailwindcss: ^3.2.4
   typescript: ^4.9.4
   undici: ^5.15.1
@@ -37,6 +38,7 @@ dependencies:
   solid-js: 1.6.12
   solid-start: 0.2.23_m6xmwfjsstiooxuq3yxxznfakq
   solid-start-vercel: 0.2.23_if7ohanqzn44ptg5rbhz3hdfky
+  solid-toast: 0.4.0_solid-js@1.6.12
   undici: 5.20.0
 
 devDependencies:
@@ -4452,6 +4454,14 @@ packages:
       wait-on: 6.0.1_debug@4.3.4
     transitivePeerDependencies:
       - supports-color
+
+  /solid-toast/0.4.0_solid-js@1.6.12:
+    resolution: {integrity: sha512-ciJbj+n+7KbUN6wfwZsW7lqFESLoQ9sXMG4uJWuHrIw2f0GxX3/wLSKs0Q1YwdTZZRxyRJ1Nwc2eBVcJvs91+g==}
+    peerDependencies:
+      solid-js: ^1.5.4
+    dependencies:
+      solid-js: 1.6.12
+    dev: false
 
   /source-map-js/1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}

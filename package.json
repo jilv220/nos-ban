@@ -35,6 +35,7 @@
     "solid-js": "^1.6.11",
     "solid-start": "^0.2.23",
     "solid-start-vercel": "^0.2.23",
+    "solid-toast": "^0.4.0",
     "undici": "^5.15.1"
   },
   "engines": {
