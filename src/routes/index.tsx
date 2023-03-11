@@ -1,8 +1,8 @@
 import { A, useNavigate } from 'solid-start'
 import userStore from '~/stores/userStore'
 import { User } from '~/types'
-import { createSignal } from 'solid-js'
-import login from '~/utils/login'
+import { createSignal, onMount } from 'solid-js'
+import login, { notSignedIn } from '~/utils/login'
 import { isNsec, notValid } from '~/utils/key'
 import { pipe, R } from '@mobily/ts-belt'
 import { nip19, getPublicKey } from 'nostr-tools'
@@ -12,6 +12,19 @@ import errorToast from '~/components/ErrorToast'
 export default function Home() {
   const [secret, setSecret] = createSignal('')
   const navigate = useNavigate()
+
+  onMount(() => {
+    const pub = localStorage.getItem('pub')
+    const priv = localStorage.getItem('priv')
+
+    if (notSignedIn(pub, priv)) return
+    userStore.setUser({
+      pub: pub as string,
+      priv: login.isSignedInNip07(pub, priv) ? '' : priv,
+      useExt: login.isSignedInNip07(pub, priv),
+    } as User)
+    navigate('/projects')
+  })
 
   const signInNip07 = async () => {
     const res = await login.signInNip07()
