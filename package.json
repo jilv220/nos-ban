@@ -32,6 +32,7 @@
     "@solidjs/router": "^0.7.0",
     "daisyui": "^2.51.3",
     "nostr-tools": "^1.7.4",
+    "solid-icons": "^1.0.4",
     "solid-js": "^1.6.11",
     "solid-start": "^0.2.23",
     "solid-start-vercel": "^0.2.23",

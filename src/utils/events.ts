@@ -1,4 +1,5 @@
-import { getEventHash, signEvent } from 'nostr-tools'
+import { getEventHash, signEvent, SimplePool } from 'nostr-tools'
+import relayStore from '~/stores/relayStore'
 import { NostrEvent, User } from '~/types'
 
 export const initKind0Json = (fullName: string, userName: string) => {
@@ -27,4 +28,25 @@ export const initKind0Event = (
   event.id = getEventHash(event)
   event.sig = signEvent(event, user.priv)
   return event
+}
+
+export const getKind0Event = async (pub: string) => {
+  const pool = new SimplePool()
+  const sub = pool.sub(relayStore.relayPool(), [
+    {
+      authors: [pub],
+      kinds: [0],
+    },
+  ])
+
+  let kind0: any
+  sub.on('event', (event: any) => {
+    kind0 = JSON.parse(event.content)
+  })
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      return resolve(kind0)
+    }, 400)
+  })
 }

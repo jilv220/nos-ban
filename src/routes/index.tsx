@@ -3,11 +3,7 @@ import userStore from '~/stores/userStore'
 import { User } from '~/types'
 import { createSignal, onMount } from 'solid-js'
 import login, { notSignedIn } from '~/utils/login'
-import { isNsec, notValid } from '~/utils/key'
-import { pipe, R } from '@mobily/ts-belt'
-import { nip19, getPublicKey } from 'nostr-tools'
-import toast from 'solid-toast'
-import errorToast from '~/components/ErrorToast'
+import { Toaster } from 'solid-toast'
 
 export default function Home() {
   const [secret, setSecret] = createSignal('')
@@ -23,47 +19,19 @@ export default function Home() {
       priv: login.isSignedInNip07(pub, priv) ? '' : priv,
       useExt: login.isSignedInNip07(pub, priv),
     } as User)
-    navigate('/projects')
+    navigate('/project')
   })
 
   const signInNip07 = async () => {
     const res = await login.signInNip07()
     if (res) {
-      navigate('/projects')
+      navigate('/project')
     }
   }
 
   const signInSecret = () => {
-    let priv = secret()
-
-    if (notValid(secret())) {
-      toast.custom(() => errorToast({ errorMsg: 'Secret not valid' }))
-      return
-    }
-
-    if (isNsec(secret())) {
-      const decodeErr = pipe(
-        R.fromExecution(() => nip19.decode(priv)),
-        R.tapError(() => {
-          toast.custom(() => errorToast({ errorMsg: 'Secret not valid' }))
-        }),
-        R.isError
-      )
-      if (decodeErr) {
-        return
-      }
-      priv = nip19.decode(priv).data as unknown as string
-    }
-
-    const pub = getPublicKey(priv)
-    userStore.setUser({
-      pub,
-      priv,
-      useExt: false,
-    } as User)
-    localStorage.setItem('pub', pub)
-    localStorage.setItem('priv', priv)
-    navigate('/projects')
+    login.signInSecret(secret())
+    navigate('/project')
   }
 
   return (
@@ -109,6 +77,7 @@ export default function Home() {
           </div>
         </div>
       </main>
+      <Toaster position="bottom-right" />
     </>
   )
 }

@@ -40,7 +40,16 @@
       "no-process-exit": "off",
       "object-shorthand": "off",
       "class-methods-use-this": "off",
-      "import/no-unresolved": "error"
+      "import/no-unresolved": "error",
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": false,
+          "optionalDependencies": false,
+          "peerDependencies": false,
+          "packageDir": "./"
+        }
+      ]
     }
   }
 }

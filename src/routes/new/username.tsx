@@ -21,7 +21,7 @@ export default function userNameView() {
 
   return (
     <>
-      <progress class="progress bg-neutral" value="50" max="100" />
+      <progress class="progress bg-neutral" value={200 / 3} max="100" />
       <h1 class="font-h1 my-6">Pick a username</h1>
       <h2 class="mb-4 mt-4 font-semibold text-1xl">Username</h2>
       <input
@@ -41,7 +41,7 @@ export default function userNameView() {
         class="btn btn-primary flex-end mt-8"
         onClick={() => {
           initKind0()
-          navigate('/new/import')
+          navigate('/new/ready')
         }}
       >
         Next

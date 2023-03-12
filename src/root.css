@@ -7,6 +7,7 @@
 
     /* Daisy overwrite */
     .btn {
+        min-height: 35px;
         @apply no-animation
     }
     .input {
@@ -25,5 +26,15 @@
     }
     .font-h1 {
         @apply font-bold text-3xl
+    }
+    .font-h2 {
+        @apply font-semibold text-xl
+    }
+    .font-h3 {
+        @apply font-medium text-base
+    }
+    .btn-primary-sm {
+        padding: 6px 12px;
+        @apply btn btn-primary rounded-2xl h-8
     }
 }

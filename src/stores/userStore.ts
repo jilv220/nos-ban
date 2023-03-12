@@ -1,5 +1,5 @@
 import { createSignal, createRoot } from 'solid-js'
-import { User } from '~/types'
+import { User, UserMeta } from '~/types'
 
 function userStore() {
   const [user, setUser] = createSignal({
@@ -8,7 +8,14 @@ function userStore() {
     useExt: false,
   } as User)
 
-  return { user, setUser }
+  const [userMeta, setUserMeta] = createSignal({
+    username: '',
+    display_name: '',
+    picture: '',
+    about: '',
+  } as UserMeta)
+
+  return { user, setUser, userMeta, setUserMeta }
 }
 
 export default createRoot(userStore)

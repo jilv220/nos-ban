@@ -11,9 +11,9 @@ import {
   Scripts,
   Title,
 } from 'solid-start'
-import { Toaster } from 'solid-toast'
 import './root.css'
 
+/* The root only also render once */
 export default function Root() {
   return (
     <Html data-theme="mydark" lang="en">
@@ -32,7 +32,6 @@ export default function Root() {
         </Suspense>
         <Scripts />
       </Body>
-      <Toaster position="bottom-right" />
     </Html>
   )
 }

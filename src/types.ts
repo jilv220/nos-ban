@@ -4,6 +4,13 @@ export interface User {
   useExt: boolean
 }
 
+export interface UserMeta {
+  username: string
+  display_name: string
+  picture: string
+  about: string
+}
+
 export interface NostrEvent {
   pubkey: string
   created_at: number

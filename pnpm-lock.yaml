@@ -19,6 +19,7 @@ specifiers:
   nostr-tools: ^1.7.4
   postcss: ^8.4.21
   prettier: ^2.8.4
+  solid-icons: ^1.0.4
   solid-js: ^1.6.11
   solid-start: ^0.2.23
   solid-start-node: ^0.2.19
@@ -35,6 +36,7 @@ dependencies:
   '@solidjs/router': 0.7.0_solid-js@1.6.12
   daisyui: 2.51.3_gbtt6ss3tbiz4yjtvdr6fbrj44
   nostr-tools: 1.7.4
+  solid-icons: 1.0.4_solid-js@1.6.12
   solid-js: 1.6.12
   solid-start: 0.2.23_m6xmwfjsstiooxuq3yxxznfakq
   solid-start-vercel: 0.2.23_if7ohanqzn44ptg5rbhz3hdfky
@@ -4324,6 +4326,15 @@ packages:
     resolution: {integrity: sha512-3dOsAHXXUkQTpOYcoAxLIorMTp4gIQr5IW3iVb7A7lFIp0VHhnynm9izx6TssdrIcVIESAlVjtnO2K8bg+Coew==}
     engines: {node: '>=12'}
     dev: true
+
+  /solid-icons/1.0.4_solid-js@1.6.12:
+    resolution: {integrity: sha512-gJTp4in3+OYCs9WvDkSLt4Los2unR3Uoder8wjh15GsfP20xiNOLfPTJllXmn+fI8+k3x7bRYtLGIgWd9fUQug==}
+    engines: {node: '>= 16'}
+    peerDependencies:
+      solid-js: '*'
+    dependencies:
+      solid-js: 1.6.12
+    dev: false
 
   /solid-js/1.6.12:
     resolution: {integrity: sha512-JFqRobfG3q5r1l4RYVOAukk6+FWtHpXGIjgh/GEsHKweN/kK+iHOtzUALE6+P5t/jIcSNeGiVitX8gmJg+cYvQ==}

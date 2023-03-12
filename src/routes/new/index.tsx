@@ -49,9 +49,9 @@ export default function New() {
 
   return (
     <>
-      <progress class="progress bg-neutral" value="25" max="100" />
+      <progress class="progress bg-neutral" value={100 / 3} max="100" />
       <h1 class="font-h1 my-6">Save your keys!</h1>
-      <p class="text-gray-100">
+      <p>
         Your private key is your password. If you lose this key, you will lose
         access to your account! Copy it and keep it in a safe place. There is no
         way to reset your private key.
