@@ -1,6 +1,17 @@
-import { getEventHash, signEvent, SimplePool } from 'nostr-tools'
+import { R } from '@mobily/ts-belt'
+import localforage from 'localforage'
+import { getEventHash, signEvent } from 'nostr-tools'
 import relayStore from '~/stores/relayStore'
-import { NostrEvent, User } from '~/types'
+import { NostrEvent, User, UserMeta } from '~/types'
+
+export const initUserMeta = (): UserMeta => {
+  return {
+    username: '',
+    display_name: '',
+    picture: '',
+    about: '',
+  }
+}
 
 export const initKind0Json = (fullName: string, userName: string) => {
   return JSON.stringify({
@@ -30,23 +41,29 @@ export const initKind0Event = (
   return event
 }
 
-export const getKind0Event = async (pub: string) => {
-  const pool = new SimplePool()
-  const sub = pool.sub(relayStore.relayPool(), [
+export const getUserMeta = async (pub: string) => {
+  const userMetaRes = R.fromNullable(
+    await localforage.getItem('userMeta'),
+    'local userMeta not found'
+  )
+  if (R.isOk(userMetaRes)) {
+    return R.toUndefined(userMetaRes) as UserMeta
+  }
+
+  const kind0s = await relayStore.relayPool().list(relayStore.relayList(), [
     {
       authors: [pub],
       kinds: [0],
     },
   ])
 
-  let kind0: any
-  sub.on('event', (event: any) => {
-    kind0 = JSON.parse(event.content)
-  })
-
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      return resolve(kind0)
-    }, 400)
-  })
+  const res = R.fromNullable(kind0s.at(-1), 'event not found')
+  if (R.isOk(res)) {
+    const userMeta = JSON.parse(
+      R.toUndefined(res)?.content as string
+    ) as UserMeta
+    localforage.setItem('userMeta', userMeta)
+    return userMeta
+  }
+  return initUserMeta()
 }

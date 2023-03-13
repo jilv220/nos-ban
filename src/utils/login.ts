@@ -1,4 +1,5 @@
 import { pipe, R, B } from '@mobily/ts-belt'
+import localforage from 'localforage'
 import { getPublicKey, nip19 } from 'nostr-tools'
 import toast from 'solid-toast'
 import errorToast from '~/components/ErrorToast'
@@ -87,6 +88,7 @@ export const autoSignIn = (pub: string, priv: string) => {
 
 export const signOut = () => {
   localStorage.clear()
+  localforage.clear()
 }
 
 export const notSignedIn = (pub: string | null, priv: string | null) => {

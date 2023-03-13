@@ -1,3 +1,4 @@
+import { SimplePool } from 'nostr-tools'
 import { createSignal, createRoot } from 'solid-js'
 
 const RELAYS = [
@@ -10,8 +11,9 @@ const RELAYS = [
 ]
 
 function relayStore() {
-  const [relayPool, setRelayPool] = createSignal(RELAYS)
-  return { relayPool, setRelayPool }
+  const [relayPool] = createSignal(new SimplePool())
+  const [relayList, setRelayList] = createSignal(RELAYS)
+  return { relayPool, relayList, setRelayList }
 }
 
 export default createRoot(relayStore)
