@@ -1,4 +1,5 @@
 import { useNavigate } from 'solid-start'
+import { PROJECTS } from '~/constants/RouteNames'
 import userStore from '~/stores/userStore'
 import login from '~/utils/login'
 
@@ -6,7 +7,7 @@ export default function readyView() {
   const navigate = useNavigate()
   const signInSecret = () => {
     login.signInSecret(userStore.user().priv)
-    navigate('/project')
+    navigate(PROJECTS)
   }
 
   return (

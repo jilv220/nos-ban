@@ -4,6 +4,7 @@ import { User } from '~/types'
 import { createSignal, onMount } from 'solid-js'
 import login, { notSignedIn } from '~/utils/login'
 import { Toaster } from 'solid-toast'
+import { PROJECTS } from '~/constants/RouteNames'
 
 export default function Home() {
   const [secret, setSecret] = createSignal('')
@@ -19,19 +20,19 @@ export default function Home() {
       priv: login.isSignedInNip07(pub, priv) ? '' : priv,
       useExt: login.isSignedInNip07(pub, priv),
     } as User)
-    navigate('/project')
+    navigate(PROJECTS)
   })
 
   const signInNip07 = async () => {
     const res = await login.signInNip07()
     if (res) {
-      navigate('/project')
+      navigate(PROJECTS)
     }
   }
 
   const signInSecret = () => {
     login.signInSecret(secret())
-    navigate('/project')
+    navigate(PROJECTS)
   }
 
   return (
