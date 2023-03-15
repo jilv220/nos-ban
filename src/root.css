@@ -13,6 +13,9 @@
     .input {
         @apply focus:outline-primary
     }
+    .textarea {
+        @apply focus:outline-primary
+    }
 
     /* Extra utils */
     .flex-center {

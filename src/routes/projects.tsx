@@ -1,25 +1,24 @@
-import { onMount } from 'solid-js'
-import { useNavigate, Outlet } from 'solid-start'
-import { autoSignIn, notSignedIn } from '~/utils/login'
+import { useNavigate } from 'solid-start'
 import NavBar from '~/components/NavBar'
 
 export default function projectsView() {
   const navigate = useNavigate()
 
-  onMount(async () => {
-    const pub = localStorage.getItem('pub')
-    const priv = localStorage.getItem('priv')
-    if (notSignedIn(pub, priv)) {
-      navigate('/')
-      return
-    }
-    autoSignIn(pub as string, priv as string)
-  })
-
   return (
     <main>
       <NavBar />
-      <Outlet />
+      <div class="flex flex-col mx-32">
+        <div class="flex-center-y justify-between bg-neutral mt-8 mb-4 p-4">
+          <h1 class="font-h2">My Projects</h1>
+          <button
+            class="btn btn-primary"
+            onClick={() => navigate('/project/new')}
+          >
+            New Project
+          </button>
+        </div>
+        <section>Placeholder</section>
+      </div>
     </main>
   )
 }

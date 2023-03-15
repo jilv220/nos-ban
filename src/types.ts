@@ -16,7 +16,7 @@ export interface NostrEvent {
   created_at: number
   content: string
   kind: number
-  tags: []
+  tags: string[][]
   id: string
   sig: string
 }

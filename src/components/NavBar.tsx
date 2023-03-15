@@ -1,15 +1,24 @@
 import { FaSolidAngleDown } from 'solid-icons/fa'
 import { FiFolder } from 'solid-icons/fi'
 import { onMount, Show } from 'solid-js'
-import { A } from 'solid-start'
+import { A, useNavigate } from 'solid-start'
+import relayStore from '~/stores/relayStore'
 import userStore from '~/stores/userStore'
-import { getUserMeta } from '~/utils/events'
-import { signOut } from '~/utils/login'
+import { getUserMeta, getUserRelays } from '~/utils/events'
+import { autoSignIn, notSignedIn, signOut } from '~/utils/login'
 
 export default function NavBar() {
+  const navigate = useNavigate()
   onMount(async () => {
     const pub = localStorage.getItem('pub')
+    const priv = localStorage.getItem('priv')
+    if (notSignedIn(pub, priv)) {
+      navigate('/')
+      return
+    }
+    autoSignIn(pub as string, priv as string)
     userStore.setUserMeta(await getUserMeta(pub as string))
+    relayStore.setRelayList(await getUserRelays(pub as string))
   })
 
   return (

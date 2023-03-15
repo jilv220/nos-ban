@@ -1,7 +1,7 @@
 import { SimplePool } from 'nostr-tools'
 import { createSignal, createRoot } from 'solid-js'
 
-const RELAYS = [
+export const DEFAULT_RELAYS = [
   'wss://nostr.island.network',
   'wss://spore.ws',
   'wss://nostr.zkid.social',
@@ -12,7 +12,7 @@ const RELAYS = [
 
 function relayStore() {
   const [relayPool] = createSignal(new SimplePool())
-  const [relayList, setRelayList] = createSignal(RELAYS)
+  const [relayList, setRelayList] = createSignal(DEFAULT_RELAYS)
   return { relayPool, relayList, setRelayList }
 }
 
