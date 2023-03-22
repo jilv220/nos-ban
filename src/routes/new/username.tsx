@@ -13,9 +13,7 @@ export default function userNameView() {
   const [fullName, setFullname] = createSignal('')
 
   const initKind0 = () => {
-    const pool = new SimplePool()
     const event = initKind0Event(userStore.user(), fullName(), userName())
-    relays.connect(relayStore.relayList(), pool)
     relayStore.relayPool().publish(relayStore.relayList(), event)
   }
 
