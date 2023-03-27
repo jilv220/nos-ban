@@ -1,11 +1,9 @@
 import { createSignal } from 'solid-js'
 import { useNavigate } from 'solid-start'
-import { SimplePool } from 'nostr-tools'
 import { initKind0Event } from '~/utils/events'
 
 import relayStore from '~/stores/relayStore'
 import userStore from '~/stores/userStore'
-import relays from '~/utils/relays'
 
 export default function userNameView() {
   const navigate = useNavigate()

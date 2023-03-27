@@ -1,9 +1,16 @@
-import { R, D, A, G, B, pipe } from '@mobily/ts-belt'
+import { R, D, A, G, B, S, pipe } from '@mobily/ts-belt'
 import localforage from 'localforage'
-import { getEventHash, nip04, signEvent } from 'nostr-tools'
+import { getEventHash, signEvent, nip04 } from 'nostr-tools'
 import { EV_NOT_FOUND } from '~/constants/Errors'
 import relayStore, { DEFAULT_RELAYS } from '~/stores/relayStore'
-import { NostrEvent, NostrFilter, User, UserMeta } from '~/types'
+import {
+  NostrEvent,
+  NostrFilter,
+  ProjectPreview,
+  User,
+  UserMeta,
+} from '~/types'
+import { generateKeyPair } from './key'
 import nip07 from './nip07'
 
 function createFilter(pub: string, kind: number): NostrFilter
@@ -61,6 +68,35 @@ export const signEventAdapter = async (user: User, event: NostrEvent) => {
   temp = event
   temp.sig = signEvent(event, user.priv)
   return temp
+}
+
+export const encryptSelfMsgAdapter = async (user: User, msg: any) => {
+  let secret: string
+  if (user.useExt) {
+    secret = await nip07.encryptMsg(user.pub, JSON.stringify(msg))
+  } else {
+    secret = await nip04.encrypt(user.priv, user.pub, JSON.stringify(msg))
+  }
+  return secret
+}
+
+export const decryptSelfMsgAdapter = async (user: User, cipherText: any) => {
+  let secret: string
+  if (cipherText === undefined) {
+    return '[]'
+  }
+
+  const isCipherText = S.includes(cipherText, '?iv=')
+  if (!isCipherText) {
+    throw new Error('not a nip04 ciphertext')
+  }
+
+  if (user.useExt) {
+    secret = await nip07.decryptMsg(user.pub, cipherText)
+  } else {
+    secret = await nip04.decrypt(user.priv, user.pub, cipherText)
+  }
+  return secret
 }
 
 export const initKind0Event = (
@@ -133,11 +169,42 @@ export const getUserRelays = async (pub: string): Promise<string[]> => {
   return DEFAULT_RELAYS
 }
 
-export const createProjectEvent = async (user: User) => {
+export const getProjectEvents = async (user: User) => {
+  const projects = await relayStore.relayPool().list(relayStore.relayList(), [
+    {
+      authors: [user.pub],
+      kinds: [30078],
+      '#d': ['nosban-project-create'],
+    },
+  ])
+
+  return pipe(
+    projects,
+    A.sort((a, b) => (a.created_at < b.created_at ? -1 : 1))
+  ).at(-1)
+}
+
+export const createProjectEvent = async (
+  user: User,
+  project: ProjectPreview
+) => {
+  const latest = await getProjectEvents(user)
+  const decrypted = await decryptSelfMsgAdapter(user, latest?.content)
+  const decryptedArr = JSON.parse(decrypted)
+
+  const groupKey = generateKeyPair().priv
+  const now = Math.round(Date.now() / 1000)
   let event: NostrEvent = {
     pubkey: user.pub,
-    created_at: Math.round(Date.now() / 1000),
-    content: '',
+    created_at: now,
+    content: await encryptSelfMsgAdapter(user, [
+      ...decryptedArr,
+      {
+        ...project,
+        createdAt: now,
+        groupKey,
+      },
+    ]),
     kind: 30078,
     tags: [['d', 'nosban-project-create']],
     id: '',
@@ -149,18 +216,10 @@ export const createProjectEvent = async (user: User) => {
 }
 
 export const initGroupEvent = async (user: User, eventId: string) => {
-  let secret: string
-
-  if (user.useExt) {
-    secret = await nip07.encryptMsg(user.pub, JSON.stringify(['p', user.pub]))
-  } else {
-    secret = JSON.stringify(['p', user.pub])
-  }
-
   let event: NostrEvent = {
     pubkey: user.pub,
     created_at: Math.round(Date.now() / 1000),
-    content: secret,
+    content: await encryptSelfMsgAdapter(user, ['p', user.pub]),
     kind: 30000,
     tags: [
       ['d', 'nosban-project-groupmember'],

@@ -31,3 +31,11 @@ export type NostrFilter = {
   search?: string
   [key: `#${string}`]: string[]
 }
+
+export interface Project {
+  name: string
+  desp: string
+  createdAt: number
+  groupKey: string
+}
+export type ProjectPreview = Omit<Project, 'groupKey' | 'createdAt'>

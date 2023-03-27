@@ -1,6 +1,8 @@
-import { pipe, B, F } from '@mobily/ts-belt'
+import { pipe, B } from '@mobily/ts-belt'
 import { BsKanban } from 'solid-icons/bs'
-import { createEffect, createSignal, on, onMount } from 'solid-js'
+import { createEffect, createSignal, on } from 'solid-js'
+import { useNavigate } from 'solid-start'
+import { PROJECTS } from '~/constants/RouteNames'
 import relayStore from '~/stores/relayStore'
 import userStore from '~/stores/userStore'
 import { createProjectEvent, initGroupEvent } from '~/utils/events'
@@ -8,13 +10,9 @@ import { createProjectEvent, initGroupEvent } from '~/utils/events'
 export default function projectView() {
   const [name, setName] = createSignal('')
   const [desp, setDesp] = createSignal('')
-  let nameLabel: Element | null
-  let despLabel: Element | null
-
-  onMount(() => {
-    nameLabel = document.querySelector('#project-name > label > span')
-    despLabel = document.querySelector('#project-desp > label > span')
-  })
+  let nameLabel: HTMLSpanElement | ((el: HTMLSpanElement) => void) | undefined
+  let despLabel: HTMLSpanElement | ((el: HTMLSpanElement) => void) | undefined
+  const navigate = useNavigate()
 
   const isProjectValid = (): boolean => name() !== '' && desp() !== ''
 
@@ -63,7 +61,7 @@ export default function projectView() {
           </label>
           <div class="form-control" id="project-name">
             <label class="label">
-              <span class="label-text text-error" />
+              <span class="label-text text-error" ref={nameLabel} />
             </label>
             <input
               type="text"
@@ -75,7 +73,7 @@ export default function projectView() {
           </div>
           <div class="form-control" id="project-desp">
             <label class="label">
-              <span class="label-text text-error" />
+              <span class="label-text text-error" ref={despLabel} />
             </label>
             <textarea
               class="textarea textarea-bordered bg-neutral/40 min-h-[10rem] text-sm mb-[3rem]"
@@ -99,12 +97,14 @@ export default function projectView() {
                   B.ifElse(
                     async () => {
                       const projectEvent = await createProjectEvent(
-                        userStore.user()
+                        userStore.user(),
+                        { name: name(), desp: desp() }
                       )
                       const groupInitEvent = await initGroupEvent(
                         userStore.user(),
                         projectEvent.id
                       )
+                      navigate(PROJECTS)
                       relayStore
                         .relayPool()
                         .publish(relayStore.relayList(), projectEvent)

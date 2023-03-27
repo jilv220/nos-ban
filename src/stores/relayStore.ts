@@ -11,7 +11,9 @@ export const DEFAULT_RELAYS = [
 ]
 
 function relayStore() {
-  const [relayPool] = createSignal(new SimplePool())
+  const [relayPool] = createSignal(
+    new SimplePool({ getTimeout: 250, eoseSubTimeout: 750 })
+  )
   const [relayList, setRelayList] = createSignal(DEFAULT_RELAYS)
   return { relayPool, relayList, setRelayList }
 }

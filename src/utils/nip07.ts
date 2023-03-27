@@ -9,10 +9,13 @@ export const signEvent = async (e: NostrEvent): Promise<NostrEvent> =>
   globalThis.nostr.signEvent(e)
 export const encryptMsg = async (pub: string, plaintext: string) =>
   globalThis.nostr.nip04.encrypt(pub, plaintext)
+export const decryptMsg = async (pub: string, ciphertext: string) =>
+  globalThis.nostr.nip04.decrypt(pub, ciphertext)
 
 export default {
   hasNip07,
   getPubkey,
   signEvent,
   encryptMsg,
+  decryptMsg,
 }
