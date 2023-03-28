@@ -3,6 +3,7 @@ import localforage from 'localforage'
 import { getEventHash, signEvent, nip04 } from 'nostr-tools'
 import { EV_NOT_FOUND } from '~/constants/Errors'
 import relayStore, { DEFAULT_RELAYS } from '~/stores/relayStore'
+import userStore from '~/stores/userStore'
 import {
   NostrEvent,
   NostrFilter,
@@ -38,15 +39,6 @@ function createFilter(arg1: unknown, arg2: unknown): NostrFilter {
   return {
     authors: [arg1 as string],
     kinds: [arg2 as number],
-  }
-}
-
-export const initUserMeta = (): UserMeta => {
-  return {
-    username: '',
-    display_name: '',
-    picture: '',
-    about: '',
   }
 }
 
@@ -123,6 +115,7 @@ export const getUserMeta = async (pub: string) => {
     await localforage.getItem('userMeta'),
     'local userMeta not found'
   )
+
   if (R.isOk(userMetaRes)) {
     return R.toUndefined(userMetaRes) as UserMeta
   }
@@ -143,8 +136,8 @@ export const getUserMeta = async (pub: string) => {
     localforage.setItem('userMeta', userMeta)
     return userMeta
   }
-  localforage.setItem('userMeta', initUserMeta())
-  return initUserMeta()
+  localforage.setItem('userMeta', userStore.userMetaInitial)
+  return userStore.userMetaInitial
 }
 
 export const getUserRelays = async (pub: string): Promise<string[]> => {

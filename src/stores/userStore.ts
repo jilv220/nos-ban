@@ -8,14 +8,16 @@ function userStore() {
     useExt: false,
   } as User)
 
-  const [userMeta, setUserMeta] = createSignal({
+  const userMetaInitial: UserMeta = {
     username: '',
     display_name: '',
     picture: '',
     about: '',
-  } as UserMeta)
+  }
 
-  return { user, setUser, userMeta, setUserMeta }
+  const [userMeta, setUserMeta] = createSignal(userMetaInitial)
+
+  return { user, setUser, userMeta, setUserMeta, userMetaInitial }
 }
 
 export default createRoot(userStore)

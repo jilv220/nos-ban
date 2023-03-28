@@ -1,25 +1,29 @@
 import { FaSolidAngleDown } from 'solid-icons/fa'
 import { FiFolder } from 'solid-icons/fi'
-import { onMount, Show } from 'solid-js'
-import { A, useNavigate } from 'solid-start'
-import relayStore from '~/stores/relayStore'
+import { createEffect, createSignal, on, onMount, Show } from 'solid-js'
+import { createStore } from 'solid-js/store'
+import { A } from 'solid-start'
 import userStore from '~/stores/userStore'
-import { getUserMeta, getUserRelays } from '~/utils/events'
-import { autoSignIn, notSignedIn, signOut } from '~/utils/login'
+import { initAppState, signOut } from '~/utils/login'
 
 export default function NavBar() {
-  const navigate = useNavigate()
-  onMount(async () => {
-    const pub = localStorage.getItem('pub')
-    const priv = localStorage.getItem('priv')
-    if (notSignedIn(pub, priv)) {
-      navigate('/')
-      return
-    }
-    autoSignIn(pub as string, priv as string)
-    userStore.setUserMeta(await getUserMeta(pub as string))
-    relayStore.setRelayList(await getUserRelays(pub as string))
+  const [state, setState] = createSignal({
+    picture: '',
+    display_name: '',
+    pub: '',
   })
+
+  createEffect(
+    on(userStore.user, async () => {
+      if (userStore.user().pub) {
+        setState({
+          picture: userStore.userMeta().picture,
+          display_name: userStore.userMeta().display_name,
+          pub: userStore.user().pub,
+        })
+      }
+    })
+  )
 
   return (
     <div class="navbar bg-neutral">
@@ -51,7 +55,7 @@ export default function NavBar() {
           <div tabindex="0" class="flex-center-x flex-center-y">
             <div class="avatar mr-2">
               <div class="rounded-full w-12 h-12">
-                <img src={userStore.userMeta().picture} />
+                <img src={state().picture} />
               </div>
             </div>
             <FaSolidAngleDown />
@@ -63,19 +67,17 @@ export default function NavBar() {
             <div class="flex-row flex-center-y mb-2">
               <div class="avatar p-1 mr-1">
                 <div class="rounded-full w-16 h-16">
-                  <img src={userStore.userMeta().picture} />
+                  <img src={state().picture} />
                 </div>
               </div>
               <div class="flex flex-col gap-1">
                 <Show
-                  when={userStore.userMeta().display_name !== ''}
+                  when={state().display_name !== ''}
                   fallback={<p class="font-semibold"> Nostrich </p>}
                 >
-                  <p class="font-semibold">
-                    {userStore.userMeta().display_name}
-                  </p>
+                  <p class="font-semibold">{state().display_name}</p>
                 </Show>
-                <p class="truncate w-[13vw]">{userStore.user().pub}</p>
+                <p class="truncate w-[13vw]">{state().pub}</p>
                 <p>Edit Profile</p>
               </div>
             </div>

@@ -3,8 +3,10 @@ import localforage from 'localforage'
 import { getPublicKey, nip19 } from 'nostr-tools'
 import toast from 'solid-toast'
 import errorToast from '~/components/ErrorToast'
+import relayStore from '~/stores/relayStore'
 import userStore from '~/stores/userStore'
 import { User } from '~/types'
+import { getUserMeta, getUserRelays } from './events'
 import { isNsec, notValid } from './key'
 import { getPubkey } from './nip07'
 
@@ -86,6 +88,11 @@ export const autoSignIn = (pub: string, priv: string) => {
   }
 }
 
+export const initAppState = async () => {
+  relayStore.setRelayList(await getUserRelays(userStore.user().pub))
+  userStore.setUserMeta(await getUserMeta(userStore.user().pub))
+}
+
 export const signOut = () => {
   localStorage.clear()
   localforage.clear()
@@ -99,6 +106,7 @@ export default {
   signInNip07,
   signInSecret,
   autoSignIn,
+  initAppState,
   signOut,
   isSignedInNip07,
   isSignedInSecret,

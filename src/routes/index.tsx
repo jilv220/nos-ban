@@ -2,7 +2,7 @@ import { A, useNavigate } from 'solid-start'
 import userStore from '~/stores/userStore'
 import { User } from '~/types'
 import { createSignal, onMount } from 'solid-js'
-import login, { notSignedIn } from '~/utils/login'
+import login, { initAppState, notSignedIn } from '~/utils/login'
 import { Toaster } from 'solid-toast'
 import { PROJECTS } from '~/constants/RouteNames'
 
@@ -26,12 +26,14 @@ export default function Home() {
   const signInNip07 = async () => {
     const res = await login.signInNip07()
     if (res) {
+      initAppState()
       navigate(PROJECTS)
     }
   }
 
-  const signInSecret = () => {
+  const signInSecret = async () => {
     login.signInSecret(secret())
+    initAppState()
     navigate(PROJECTS)
   }
 

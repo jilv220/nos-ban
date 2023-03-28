@@ -1,4 +1,4 @@
-import { createEffect, onMount, on, For } from 'solid-js'
+import { createEffect, onMount, on, For, Show, lazy } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { useNavigate } from 'solid-start'
 import NavBar from '~/components/NavBar'
