@@ -7,7 +7,7 @@ import userStore from '~/stores/userStore'
 import { initAppState, signOut } from '~/utils/login'
 
 export default function NavBar() {
-  const [state, setState] = createSignal({
+  const [state, setState] = createStore({
     picture: '',
     display_name: '',
     pub: '',
@@ -16,11 +16,18 @@ export default function NavBar() {
   createEffect(
     on(userStore.user, async () => {
       if (userStore.user().pub) {
-        setState({
-          picture: userStore.userMeta().picture,
-          display_name: userStore.userMeta().display_name,
-          pub: userStore.user().pub,
-        })
+        setState('pub', userStore.user().pub)
+      }
+    })
+  )
+
+  createEffect(
+    on(userStore.userMeta, async () => {
+      if (userStore.userMeta().picture) {
+        setState('picture', userStore.userMeta().picture)
+      }
+      if (userStore.userMeta().display_name) {
+        setState('display_name', userStore.userMeta().display_name)
       }
     })
   )
@@ -55,7 +62,7 @@ export default function NavBar() {
           <div tabindex="0" class="flex-center-x flex-center-y">
             <div class="avatar mr-2">
               <div class="rounded-full w-12 h-12">
-                <img src={state().picture} />
+                <img src={state.picture} />
               </div>
             </div>
             <FaSolidAngleDown />
@@ -67,17 +74,17 @@ export default function NavBar() {
             <div class="flex-row flex-center-y mb-2">
               <div class="avatar p-1 mr-1">
                 <div class="rounded-full w-16 h-16">
-                  <img src={state().picture} />
+                  <img src={state.picture} />
                 </div>
               </div>
               <div class="flex flex-col gap-1">
                 <Show
-                  when={state().display_name !== ''}
+                  when={state.display_name !== ''}
                   fallback={<p class="font-semibold"> Nostrich </p>}
                 >
-                  <p class="font-semibold">{state().display_name}</p>
+                  <p class="font-semibold">{state.display_name}</p>
                 </Show>
-                <p class="truncate w-[13vw]">{state().pub}</p>
+                <p class="truncate w-[13vw]">{state.pub}</p>
                 <p>Edit Profile</p>
               </div>
             </div>
